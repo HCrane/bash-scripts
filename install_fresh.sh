@@ -1,4 +1,9 @@
 #!/bin/bash
+################################################################################
+# Custom standard install programm for linux
+# Written by Emanuel Moser
+################################################################################
+
 
 
 ################################################################################
@@ -10,17 +15,21 @@ red='tput setaf 1'
 green='tput setaf 2'
 ################################################################################
 
+
+
 ################################################################################
 # Fetching new package list
 # Declare if custom programs from the web will be downloaded
 # 1 = true
 # 0 = flase
 ################################################################################
-apt-get update
-CUSTOM_PROGRAMMS = 0
+#apt-get update
+CUSTOM_PROGRAMMS=1
 ################################################################################
 
 
+
+################################################################################
 declare -a INSTALL
 ################################################################################
 # Declaration of the packages you want installed
@@ -41,14 +50,17 @@ do
 done
 ################################################################################
 
+
+
+################################################################################
 declare -a NAME
 declare -a LINK
 ################################################################################
 # Custom software that cannot be found in the package lists because of reasons
 ################################################################################
 if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
-  NAME=(atom)
-  LINK=(https://atom.io/download/deb)
+  NAME=( atom )
+  LINK=( https://atom.io/download/deb )
   x=0
 
   for i in "${NAME[@]}"
@@ -56,14 +68,15 @@ if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
    if [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]]; then
     echo "${bold}$i${normal} will be installed"
     wget LINK[$x]
+    filename=$(basename "LINK[$x]")
+    echo $filename
     x=$((x+1))
+    dpkg -i $filename
+
    elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
     echo "${bold}$i${normal} already installed installed"
     x=$((x+1))
    fi
   done
-
-  echo "Atom downloaded"
 fi
-
-echo "Finished! :D"
+################################################################################
