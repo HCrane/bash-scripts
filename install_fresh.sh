@@ -57,6 +57,7 @@ declare -a NAME
 declare -a LINK
 ################################################################################
 # Custom software that cannot be found in the package lists because of reasons
+# !!!!!!!ATTENTION:The order is important how you add the names and links!!!!!!!
 ################################################################################
 if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
   NAME=( atom )
