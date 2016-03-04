@@ -1,25 +1,69 @@
 #!/bin/bash
-#design
 
+
+################################################################################
+# Design
+################################################################################
 bold=$(tput bold)
 normal=$(tput sgr0)
 red='tput setaf 1'
 green='tput setaf 2'
+################################################################################
 
-#apt-get update
-echo "Fetching new package lists"
+################################################################################
+# Fetching new package list
+# Declare if custom programs from the web will be downloaded
+# 1 = true
+# 0 = flase
+################################################################################
+apt-get update
+CUSTOM_PROGRAMMS = 0
+################################################################################
+
 
 declare -a INSTALL
-INSTALL=( unrar unzip git)
+################################################################################
+# Declaration of the packages you want installed
+# CUSTIM packages are used for special computers. e.g. not every pc of mine
+# needs virtualbox. Can be commented out if not needed
+################################################################################
+CUSTOM1=virtualbox
+INSTALL=( unrar unzip git htop $CUSTOM1 )
 
 for i in "${INSTALL[@]}"
 do
  if [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]]; then
   echo "${bold}$i${normal} will be installed"
-  apt-get install $i
+  apt-get install $i -y
  elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
   echo "${bold}$i${normal} already installed installed"
  fi
 done
+################################################################################
 
-echo
+declare -a NAME
+declare -a LINK
+################################################################################
+# Custom software that cannot be found in the package lists because of reasons
+################################################################################
+if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
+  NAME=(atom)
+  LINK=(https://atom.io/download/deb)
+  x=0
+
+  for i in "${NAME[@]}"
+  do
+   if [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]]; then
+    echo "${bold}$i${normal} will be installed"
+    wget LINK[$x]
+    x=$((x+1))
+   elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
+    echo "${bold}$i${normal} already installed installed"
+    x=$((x+1))
+   fi
+  done
+
+  echo "Atom downloaded"
+fi
+
+echo "Finished! :D"
