@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################################################################
-# Custom standard install programm for linux
+# Custom standard install programm for freshly installed linux
 # Written by Emanuel Moser
 ################################################################################
 
@@ -11,8 +11,8 @@
 ################################################################################
 bold=$(tput bold)
 normal=$(tput sgr0)
-red='tput setaf 1'
-green='tput setaf 2'
+red=$(tput setaf 1)
+green=$(tput setaf 2)
 ################################################################################
 
 
@@ -33,16 +33,17 @@ CUSTOM_PROGRAMMS=1
 declare -a INSTALL
 ################################################################################
 # Declaration of the packages you want installed
-# CUSTIM packages are used for special computers. e.g. not every pc of mine
+# CUSTOM packages are used for special computers. e.g. not every pc of mine
 # needs virtualbox. Can be commented out if not needed
 ################################################################################
-CUSTOM1=virtualbox
-INSTALL=( unrar unzip git htop $CUSTOM1 )
+#CUSTOM1=virtualbox
+#CUSTOM2=
+INSTALL=( unrar unzip git htop curl $CUSTOM1 $CUSTOM2 )
 
 for i in "${INSTALL[@]}"
 do
  if [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]]; then
-  echo "${bold}$i${normal} will be installed"
+  echo "[${red}NO${normal}]${bold}$i${normal} will be installed"
   apt-get install $i -y
  elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
   echo "${bold}$i${normal} already installed installed"
@@ -67,15 +68,16 @@ if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
   for i in "${NAME[@]}"
   do
    if [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 0 ]]; then
-    echo "${bold}$i${normal} will be installed"
-    wget LINK[$x]
-    filename=$(basename "LINK[$x]")
+    echo "[${red}NO${normal}]${bold}$i${normal} will be installed"
+    #creating -deb file with name of package
+    filename="${NAME[$x]}.deb"
+    wget -O $filename ${LINK[$x]}
     echo $filename
-    x=$((x+1))
     dpkg -i $filename
-
+    rm -Rf $filename
+    x=$((x+1))
    elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
-    echo "${bold}$i${normal} already installed installed"
+    echo "[${green}OK${normal}]${bold}$i${normal} already installed installed"
     x=$((x+1))
    fi
   done
