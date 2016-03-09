@@ -38,7 +38,7 @@ declare -a INSTALL
 ################################################################################
 #CUSTOM1=virtualbox
 #CUSTOM2=
-INSTALL=( unrar unzip git htop curl $CUSTOM1 $CUSTOM2 )
+INSTALL=( unrar unzip git htop curl firmware-iwlwifi $CUSTOM1 $CUSTOM2 )
 
 for i in "${INSTALL[@]}"
 do
@@ -74,6 +74,7 @@ if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
     wget -O $filename ${LINK[$x]}
     echo $filename
     dpkg -i $filename
+    apt-get -f install
     rm -Rf $filename
     x=$((x+1))
    elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
