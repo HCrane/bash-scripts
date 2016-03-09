@@ -61,8 +61,8 @@ declare -a LINK
 # !!!!!!!ATTENTION:The order is important how you add the names and links!!!!!!!
 ################################################################################
 if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
-  NAME=( atom )
-  LINK=( https://atom.io/download/deb )
+  NAME=( atom gitkraken )
+  LINK=( https://atom.io/download/deb https://release.gitkraken.com/linux/gitkraken-amd64.deb )
   x=0
 
   for i in "${NAME[@]}"
