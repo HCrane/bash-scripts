@@ -36,9 +36,10 @@ declare -a INSTALL
 # CUSTOM packages are used for special computers. e.g. not every pc of mine
 # needs virtualbox. Can be commented out if not needed
 ################################################################################
-#CUSTOM1=virtualbox
-#CUSTOM2=
-INSTALL=( unrar unzip git htop curl firmware-iwlwifi $CUSTOM1 $CUSTOM2 )
+CUSTOM1=virtualbox
+CUSTOM2=chromium
+CUSTOM3=kde-config-touchpad
+INSTALL=( unrar unzip git htop curl firmware-iwlwifi $CUSTOM1 $CUSTOM2 $CUSTOM3 )
 
 for i in "${INSTALL[@]}"
 do
