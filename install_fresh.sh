@@ -23,7 +23,7 @@ green=$(tput setaf 2)
 # 1 = true
 # 0 = flase
 ################################################################################
-#apt-get update
+apt-get update
 CUSTOM_PROGRAMMS=1
 ################################################################################
 
@@ -75,7 +75,7 @@ if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
     wget -O $filename ${LINK[$x]}
     echo $filename
     dpkg -i $filename
-    apt-get -f install
+    apt-get -f install -y
     rm -Rf $filename
     x=$((x+1))
    elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
