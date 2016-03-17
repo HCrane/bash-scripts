@@ -1,7 +1,7 @@
 #!/bin/bash
 ################################################################################
 # Custom standard install programm for freshly installed linux
-# Written by Emanuel Moser
+# Written by Emanuel Moser#
 ################################################################################
 
 
