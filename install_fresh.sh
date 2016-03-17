@@ -20,11 +20,13 @@ green=$(tput setaf 2)
 ################################################################################
 # Fetching new package list
 # Declare if custom programs from the web will be downloaded
+#Declare is Z Shell and Config from IAIK TU GRAZ should be installed
 # 1 = true
 # 0 = flase
 ################################################################################
 apt-get update
-CUSTOM_PROGRAMMS=1
+CUSTOM_PROGRAMMS=0
+ZSH=1
 ################################################################################
 
 
@@ -83,5 +85,23 @@ if [[ CUSTOM_PROGRAMMS -eq 1 ]]; then
     x=$((x+1))
    fi
   done
+fi
+################################################################################
+
+
+
+################################################################################
+# Custom software that cannot be found in the package lists because of reasons
+# !!!!!!!ATTENTION:The order is important how you add the names and links!!!!!!!
+################################################################################
+if [[ ZSH -eq 1 ]]; then
+  if [[ $(dpkg-query -W -f='${Status}' zsh 2>/dev/null | grep -c "ok installed") -eq 0  ]]; then
+    echo "[${red}NO${normal}]${bold}zsh${normal} will be installed"
+    sudo aptitude install zsh &&
+    wget -O ~/.zshrc http://git.grml.org/f/grml-etc-core/etc/zsh/zshrc &&
+    chsh -s /usr/bin/zsh
+  elif [[ $(dpkg-query -W -f='${Status}' $i 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
+   echo "[${green}OK${normal}]${bold}zsh${normal} already installed installed"
+ fi
 fi
 ################################################################################
